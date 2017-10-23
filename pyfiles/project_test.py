@@ -11,13 +11,11 @@ import numpy as np
 import pickle
 import cv2
 from scipy.ndimage.measurements import label
-from lesson_functions import *
-from hog_subsample import find_cars
-from false_pos import *
+from project_utils import *
 
 y_start_stop = [400, 656] # Min and max in y to search in slide_window()
 
-image = mpimg.imread('../test_images/test2.jpg')
+image = mpimg.imread('../test_images/test1.jpg')
 
 print(image.shape)
 draw_image = np.copy(image)
@@ -34,7 +32,7 @@ for scale in [1,1.5,2]:
 
 heat = np.zeros_like(image[:,:,0]).astype(np.float)
 heat = add_heat(heat,bbox_list)
-heat = apply_threshold(heat,4)         
+heat = apply_threshold(heat,1)         
 heatmap = np.clip(heat, 0, 255)
 labels = label(heatmap)
 draw_img = draw_labeled_bboxes(draw_image, labels)
