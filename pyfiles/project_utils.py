@@ -274,3 +274,11 @@ def draw_labeled_bboxes(img, labels):
         bblist.append(bbox)
     # Return the image
     return img,bblist
+
+def expand_bbox(oldbb,scale):
+    center = (np.array(oldbb[1])+np.array(oldbb[0]))/2
+    width  = (np.array(oldbb[1])-np.array(oldbb[0]))/2
+    e_lefttop = center - scale*width
+    e_rightbottom = center + scale*width
+    return e_lefttop, e_rightbottom
+    
