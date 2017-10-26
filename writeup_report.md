@@ -1,6 +1,3 @@
-##Writeup Template
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Vehicle Detection Project**
@@ -30,7 +27,7 @@ The goals / steps of this project are the following:
 ---
 ###Writeup / README
 
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Vehicle-Detection/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
+####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.    
 
 You're reading it!
 
@@ -38,7 +35,7 @@ You're reading it!
 
 ####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+The code for this project is in a combination of an Ipython notebook (vehicle_detection.ipynb) and a python module containing several utilities function (project_utils.py). Both of these are in the pyfiles/ folder in the repository.  
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
@@ -53,23 +50,23 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters on the test images and arrived at one that seemed to give the best results on the test images.
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I trained a linear SVM using the LinearSVC module of the scikit-learn package. I was able to obtain a high accuracy score of 98.5% that seemed Ok for the project.
 
 ###Sliding Window Search
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+The hog subsampling approach was used to implement the sliding window search. The serach was restricted to the space between 400 and 600 pixels in the 'Y' dimension. In addition a varying scale was used for different sections of the images to detect near and far away objects.
 
 ![alt text][image3]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched on four scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. I also used a heatmap that ensured that a vehicle was detected by at least two bounding boxes which eliminated most of the false positives. Here are some example images:
 
 ![alt text][image4]
 ---
