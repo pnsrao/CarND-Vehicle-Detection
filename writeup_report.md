@@ -32,7 +32,7 @@ You're reading it!
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this project is in a combination of an Ipython notebook (vehicle_detection.ipynb) and a python module containing several utilities function (project_utils.py). Both of these are in the pyfiles/ folder in the repository.  
+The code for this project is in a combination of an Ipython notebook (vehicle_detection.ipynb) and a python module containing several utilities function (project_utils.py).  
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
@@ -42,28 +42,31 @@ I then explored different color spaces and different `skimage.hog()` parameters 
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
-
 ![alt text][image2]
+
+Above can be found in Cells 1 to 4 of vehicle_detection.ipynb
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters on the test images and arrived at one that seemed to give the best results on the test images.
+I tried various combinations of parameters on the test images and arrived at one that seemed to give the best results on the test images. Results on the test images can be found later in the writeup.
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 I trained a linear SVM using the LinearSVC module of the scikit-learn package. I was able to obtain a high accuracy score of 98.5% that seemed Ok for the project.
 
+Thi scan be found in Cell 5 of the notebook.
+
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-The hog subsampling approach was used to implement the sliding window search. The serach was restricted to the space between 400 and 600 pixels in the 'Y' dimension. In addition a varying scale was used for different sections of the images to detect near and far away objects.
+The hog subsampling approach was used to implement the sliding window search. The serach was restricted to the space between 400 and 600 pixels in the 'Y' dimension. In addition a varying scale was used for different sections of the images to detect near and far away objects. The code can be found in the function find_cars() in Cell 6  and the process_image function in cell 8. An illustration of the scaled and sliding window is in the following figure.
 
 ![alt text][image3]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on four scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. I also used a heatmap that ensured that a vehicle was detected by at least two bounding boxes which eliminated most of the false positives. Here are some example images:
+Ultimately I searched on four scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. I also used a heatmap that ensured that a vehicle was detected by at least two bounding boxes which eliminated most of the false positives. There are occasional false positives and smaller bounding boxes. Here are some example images:
 
 ![alt text][image4]
 ---
@@ -78,7 +81,9 @@ Here's a [link to my video result](./project_video.mp4)
 
 After having used the pipeline on the test images, initial attempts on the test and project videos resulted in a few false positives and some occasions of missed detections.In addition, the bounding box was not fully enclosing the white car in many frames.
 
-To eliminate the false positives as well as to make use of the temporal correlation of the car positions in the video, I decided to integrate the heatmap over several frames of the video. This has the effect of removing the false positives which only persist for a frame or two. In addition, combining the heatmaps also has the effect of unifying overlapping bounding boxes over successive frames. This results in a bounding box that encloses most of the white car.
+To eliminate the false positives as well as to make use of the temporal correlation of the car positions in the video, I decided to integrate the heatmap over several frames of the video. This has the effect of removing the false positives which only persist for a frame or two. In addition, combining the heatmap also has the effect of unifying overlapping bounding boxes over successive frames. This results in a bounding box that encloses most of the white car.
+
+The code is in the process_image function in cell 8 of the notebook as well as the integration_length setting in Cell 22.
 
 In my implementation, I used heatmap integration over the past 15 frames. The resulting heatmap and the output bounding boxes are shown in the next two images
 
