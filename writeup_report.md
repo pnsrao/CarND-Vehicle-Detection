@@ -12,11 +12,10 @@ The goals / steps of this project are the following:
 * Estimate a bounding box for vehicles detected.
 
 [//]: # (Image References)
-[image1]: ./examples/car_not_car.png
-[image2]: ./examples/HOG_example.jpg
-[image3]: ./examples/sliding_windows.jpg
-[image4]: ./examples/sliding_window.jpg
-[image5]: ./examples/bboxes_and_heat.png
+[image1]: ./output_images/car_not_car.png
+[image2]: ./output_images/HOG_example.png
+[image3]: ./output_images/sliding_windows.png
+[image4]: ./output_images/test_images_out.png
 [image6]: ./examples/labels_map.png
 [image7]: ./examples/output_bboxes.png
 [video1]: ./project_video.mp4
@@ -79,18 +78,14 @@ Here's a [link to my video result](./project_video.mp4)
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+After having used the pipeline on the test images, initial attempts on the test and project videos resulted in a few false positives and some occasions of missed detections.In addition, the bounding box was not fully enclosing the white car in many frames.
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+To eliminate the false positives as well as to make use of the temporal correlation of the car positions in the video, I decided to integrate the heatmap over several frames of the video. This has the effect of removing the false positives which only persist for a frame or two. In addition, combining the heatmaps also has the effect of unifying overlapping bounding boxes over successive frames. This results in a bounding box that encloses most of the white car.
 
-### Here are six frames and their corresponding heatmaps:
+In my implementation, I used heatmap integration over the past 15 frames. The resulting heatmap and the output bounding boxes are shown in the next two images
 
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
 ![alt text][image6]
 
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
 ![alt text][image7]
 
 
@@ -101,5 +96,5 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+I had a tough time detecting and bounding the white car until I I used the YCbCr color space and also integrated over multiple frames. I still see that boxes are a bit wobbly at times and, on rare occasions, I do miss the white car over a couple of frames. One aspect that I haven't explored is to change the search space in response to predicted car positions. This idea may help improve te robustness of detection. Another idea would be to train multiple classifiers over different color spaces. Then unify the bounding boxes detected by both classifiers.
 
