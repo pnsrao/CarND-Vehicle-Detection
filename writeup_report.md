@@ -54,7 +54,7 @@ I tried various combinations of parameters on the test images and arrived at one
 
 I trained a linear SVM using the LinearSVC module of the scikit-learn package. I was able to obtain a high accuracy score of 98.5% that seemed Ok for the project.
 
-Thi scan be found in Cell 5 of the notebook.
+This can be found in Cell 5 of the notebook.
 
 ### Sliding Window Search
 
@@ -74,7 +74,7 @@ Ultimately I searched on four scales using YCrCb 3-channel HOG features plus spa
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_video_out.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
